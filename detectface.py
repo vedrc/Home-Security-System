@@ -2,6 +2,7 @@ import face_recognition
 import cv2
 import numpy as np
 import os
+from twilio.rest import Client
 from datetime import timedelta
 from datetime import datetime
 import time
@@ -189,6 +190,7 @@ while True:
             mygenage = genderage()
             if (now >= future_time and "Unknown" in face_names) or (sent == False and "Unknown" in face_names):
                 debug ('Unknown face found, now ({}) > future_time ({}) so sending out email and sms'.format(now, future_time))
+                client.messages.create(to='+12403443286', from_='+13016857715', body="An unknown person has entered the room. This person is {}. Check your gmail for more info.").format(mygenage)
                 cv2.imwrite(screenshot_dir,frame)
                 send_email(file_to_send=screenshot_dir)
                 sent = True
