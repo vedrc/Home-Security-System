@@ -27,10 +27,11 @@ config = configparser.ConfigParser()
 config.read('config.ini')
 known_dir = config['dir']['known_faces_dir']
 screenshot_dir = config['dir']['screenshot_dir']
-from_phone = config['sms']['from_phone']
-to_phone = config['sms']['to_phone']
+from_phone = config['twilio']['from_phone']
+to_phone = config['twilio']['to_phone']
 
-    
+client = Client(config['twilio']['api_key'],config['twilio']['api_token'])
+
 def debug(message):
     global debug_on
     if (debug_on):
@@ -193,7 +194,7 @@ while True:
             mygenage = genderage()
             if (now >= future_time and "Unknown" in face_names) or (sent == False and "Unknown" in face_names):
                 debug ('Unknown face found, now ({}) > future_time ({}) so sending out email and sms'.format(now, future_time))
-                client.messages.create(to=to_phone, from_=from_phone, body="An unknown person has entered the room. This person is {}. Check your gmail for more info.").format(mygenage)
+                client.messages.create(to=to_phone, from_=from_phone, body="An unknown person has entered the room. This person is {}. Check your gmail for more info.".format(mygenage))
                 cv2.imwrite(screenshot_dir,frame)
                 send_email(file_to_send=screenshot_dir)
                 sent = True
