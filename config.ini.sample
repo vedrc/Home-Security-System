@@ -6,6 +6,8 @@ password = emailpassword
 send_to = persontoalert@domain.com
 
 [sms]
+api_key = your_twilio_api_key
+api_token = your_twilio_token
 from_phone = phone_number_to_send_from
 to_phone = phone_number_to_send_to
 
