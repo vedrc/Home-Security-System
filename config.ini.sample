@@ -1,0 +1,22 @@
+[gmail]
+# This is the section where you configure
+# the email the alert is sent from and the destimnation email
+from_email = youremail@domain.com
+password = emailpassword
+send_to = persontoalert@domain.com
+
+
+[dir]
+# screenshot is the path where the face screenshot will be saved
+screenshot_dir = /path/to/screenshot.png
+# path to directory of known faces. It will load these faces to recognize them
+known_faces_dir = /path/to/known_faces
+
+[models]
+# various models that are needed for the ml code
+faceProto = models/opencv_face_detector.pbtxt
+faceModel = models/opencv_face_detector_uint8.pb
+ageProto = models/age_deploy.prototxt
+ageModel = models/age_net.caffemodel
+genderProto = models/gender_deploy.prototxt
+genderModel = models/gender_net.caffemodel
