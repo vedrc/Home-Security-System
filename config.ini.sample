@@ -5,6 +5,10 @@ from_email = youremail@domain.com
 password = emailpassword
 send_to = persontoalert@domain.com
 
+[sms]
+from_phone = phone_number_to_send_from
+to_phone = phone_number_to_send_to
+
 
 [dir]
 # screenshot is the path where the face screenshot will be saved
