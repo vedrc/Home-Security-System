@@ -1,3 +1,8 @@
+# Home Security System
+# A Project by Ved Roychowdhury
+# https://github.com/vedrc/Home-Security-System
+
+#Import necessary modules
 import face_recognition
 import cv2
 import numpy as np
@@ -15,21 +20,21 @@ from email import encoders
 import os.path
 import math
 
-
+# Setting current time and future time. 
 now = datetime.now()
 future_time = now + timedelta (minutes=20)
 sent = False
 
+# Make this False if you don't want debug statements.
 debug_on = True
 
-
+#Loading sensitive variables from config.ini
 config = configparser.ConfigParser()
 config.read('config.ini')
 known_dir = config['dir']['known_faces_dir']
 screenshot_dir = config['dir']['screenshot_dir']
 from_phone = config['twilio']['from_phone']
 to_phone = config['twilio']['to_phone']
-
 client = Client(config['twilio']['api_key'],config['twilio']['api_token'])
 
 def debug(message):
@@ -38,8 +43,9 @@ def debug(message):
         print ('DEBUG: {}'.format(message))
     
 def genderage():
-
+    # Gender-age detection
     def getFaceBox(net, frame, conf_threshold=0.7):
+        #Locating face
         frameOpencvDnn = frame.copy()
         frameHeight = frameOpencvDnn.shape[0]
         frameWidth = frameOpencvDnn.shape[1]
@@ -57,7 +63,7 @@ def genderage():
                 y2 = int(detections[0, 0, i, 6] * frameHeight)
                 bboxes.append([x1, y1, x2, y2])
         return frameOpencvDnn, bboxes
-
+    # Loading necessary models
     faceProto = config['models']['faceProto']
     faceModel = config['models']['faceModel']
     ageProto = config['models']['ageProto']
@@ -84,9 +90,8 @@ def genderage():
         
 
     for bbox in bboxes:
-        # print(bbox)
         face = frame1[max(0,bbox[1]-padding):min(bbox[3]+padding,frame.shape[0]-1),max(0,bbox[0]-padding):min(bbox[2]+padding, frame.shape[1]-1)]
-
+        #Labeling the face
         blob = cv2.dnn.blobFromImage(face, 1.0, (227, 227), MODEL_MEAN_VALUES, swapRB=False)
         genderNet.setInput(blob)
         genderPreds = genderNet.forward()
@@ -100,8 +105,8 @@ def genderage():
 
 
        
-        #cv2.imwrite("age-gender-out-{}".format(args.input),frameFace)
 def send_email(file_to_send):
+    #Configuring send to and send from.
     email = config['gmail']['from_email']
     password = config['gmail']['password']
     send_to_email = config['gmail']['send_to']
@@ -194,7 +199,8 @@ while True:
             mygenage = genderage()
             if (now >= future_time and "Unknown" in face_names) or (sent == False and "Unknown" in face_names):
                 debug ('Unknown face found, now ({}) > future_time ({}) so sending out email and sms'.format(now, future_time))
-                client.messages.create(to=to_phone, from_=from_phone, body="An unknown person has entered the room. This person is {}. Check your gmail for more info.".format(mygenage))
+                # The next line is completely optional. It is an sms sender. If you don't have a Twilio Account, sign up at twilio.com. More on the README.md 
+                #client.messages.create(to=to_phone, from_=from_phone, body="An unknown person has entered the room. This person is {}. Check your gmail for more info.".format(mygenage))
                 cv2.imwrite(screenshot_dir,frame)
                 send_email(file_to_send=screenshot_dir)
                 sent = True
@@ -233,10 +239,6 @@ while True:
     # Hit 'q' on the keyboard to quit!
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
-
-    # we are alternating process_this frame in each while iteration
-    # what that means is every 2nd frame will be used
-    #process_this_frame = not process_this_frame
 
 
 # Release handle to the webcam

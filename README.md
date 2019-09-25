@@ -14,7 +14,8 @@ The program will send an email when an Unknown person has been detected. If that
 
 ### How to use
 
-I've put together all of the sensitive information in the `config.ini.sample` file. Please change the data in there, like the email, password, and path to folders. The age and gender models are all ok if you download or clone this project in the same structure. I originally had [Twilio](https://www.twilio.com) SMS on this, which I excluded. You are free to add it. If you already have a Twilio account with a phone number and sms, you can add it to your Unknown notification script using this line of code:
+I've put together all of the sensitive information in the `config.ini.sample` file. Please change the data in there, like the email,password, and path to folders. The age and gender models are all ok if you download or clone this project in the same structure. I originally had [Twilio](https://www.twilio.com) SMS on this, which I have made optional. It is on line 203 in detectface.py. If you
+lost the line, here it is:
 
 ```python
 client.messages.create(to=smsto, from_=smsfrom, body="An unknown person has entered the room. This person is {}. Check your gmail for more info.").format(mygenage)
