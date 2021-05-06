@@ -1,7 +1,7 @@
 # Home Security System
 ## A project by Ved Roychowdhury
 
-This program uses dlib face/age/gender recognition to create a home security system. I am a student at [Urbana Middle School](https://education.fcps.org/ums/home) and this is my first project in learning how to use machine learning for something useful. I plan to eventually port this code into a Raspberry Pi 4 with a pi cam and stick it close to our front door :-)
+This program uses dlib face/age/gender recognition to create a home security system. I am a student who enjoys coding and this is my first project in learning how to use machine learning for something useful. I plan to eventually port this code into a Raspberry Pi 4 with a pi cam and stick it close to our front door :-)
 
 ### Features
 
